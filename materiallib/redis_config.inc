@@ -1,0 +1,11 @@
+<?php
+//以下为系统默认的redis配置
+$redis_ip="192.168.164.189";//redis集群的vip
+$redis_port=6379;//redis集群的端口
+$redis_db_index=8;//redis选择的数据库
+$username_num_down_max_moren="50";//用户账号最大下载个数
+$userip_num_down_max_moren="1000";//用户账号最大下载个数
+$expire_time_moren=86400;//每个资源下载的生存周期时长,单位是秒
+$time_out_moren=3;//redis连接超时时间按，默认5秒
+$redis_auth='';//redis认证密码
+?>

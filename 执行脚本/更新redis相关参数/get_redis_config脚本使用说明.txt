@@ -1,0 +1,2 @@
+run_config.php，每十分钟执行一次，由crontab调用，从redis数据库中获取相关配置信息，更新到资源服务的配置文件中
+clear_key.php，每天0点执行一次，由crontab调用，删除redis数据库中的相关键，重新计算下载次数

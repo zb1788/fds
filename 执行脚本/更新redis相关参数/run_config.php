@@ -1,0 +1,88 @@
+<?php
+//功能有，检查redis状态正常，检查
+$file_name="/home/phpscript/data_config.inc";
+include("/home/phpscript/redis_config.inc");
+try{
+$redis = new Redis();  
+$redis->connect($redis_ip,$redis_port,$time_out_moren);
+$reslut= $redis->ping();
+if($reslut=="PONG" || $reslut=="+PONG") 
+{
+    $redis->select($redis_db_index);
+    $username_num_down_max_get=$redis->get("username_down_num_level");
+    $userip_num_down_max_get=$redis->get("userip_down_num_level");
+    $expire_time_get=$redis->get("expire_time");
+    $check_flag_get=$redis->get("check_flag");
+    $time_out_get=$redis->get("redis_time_out");
+    $time_out_get=$redis->get("redis_time_out");
+    $select_redis_db_index_key_get=$redis->get("select_redis_db_index_key");
+    $fp = fopen($file_name, "w+");
+    if($fp)
+    {
+        fwrite($fp,"<?php\r\n"); 
+        if($username_num_down_max_get!="")
+        {
+            fwrite($fp,"\$username_num_down_max=".$username_num_down_max_get.";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\$username_num_down_max=".$username_num_down_max_moren.";\r\n");
+        }
+        if($userip_num_down_max_get!="")
+        {
+            fwrite($fp,"\$userip_num_down_max=".$userip_num_down_max_get.";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\$userip_num_down_max=".$userip_num_down_max_moren.";\r\n");
+        }
+        if($expire_time_get!="")
+        {
+            fwrite($fp,"\$expire_time=".$expire_time_get.";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\$expire_time=".$expire_time_moren.";\r\n");
+        }
+        if($time_out_get!="")
+        {
+            fwrite($fp,"\$time_out=".$time_out_get.";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\$time_out=".$time_out_moren.";\r\n");
+        }
+        if($check_flag_get!="")
+        {
+            fwrite($fp,"\$check_flag=\"".$check_flag_get."\";\r\n");
+        }
+        else
+        {
+            fwrite($fp,"\$check_flag=\"1\";\r\n");
+        }
+        fwrite($fp,"?>\r\n");
+    }
+    fclose($fp);
+}
+else
+{
+    $fp = fopen($file_name, "w");
+    if($fp)
+    {
+        fwrite($fp,"<?php\r\n"); 
+        fwrite($fp,"\$check_flag=\"0\";\r\n");
+        fwrite($fp,"?>\r\n");
+        fclose($fp);
+    }
+}
+}catch(Exception $e){
+    $fp = fopen($file_name, "w");
+    if($fp)
+    {
+        fwrite($fp,"<?php\r\n"); 
+        fwrite($fp,"\$check_flag=\"0\";\r\n");
+        fwrite($fp,"?>\r\n");
+        fclose($fp);
+    }   
+}
+?>
